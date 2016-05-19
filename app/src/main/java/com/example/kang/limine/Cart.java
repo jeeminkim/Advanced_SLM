@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,6 @@ public class Cart extends Parking {
             this.price = price;
             this.location = location;
             this.count = count;
-
         }
         public int getImage() {
             return image;
@@ -78,12 +78,10 @@ public class Cart extends Parking {
             String curl = c.getString(3);
             String ccount = c.getString(4);
             String ccheck = c.getString(5);
-
             arrData.add(new MyData(R.drawable.ic_menu_camera, cname, cprice, clocation, ccount));
             int scount = Integer.parseInt(ccount);
             int sprice = Integer.parseInt(cprice);
             sum = sum+(scount*sprice);
-
         }
         String str = Integer.toString(sum);
         textView.append(str);
@@ -97,16 +95,28 @@ public class Cart extends Parking {
         finish();
     }
     public void selectdelete(View v){
-        sql.execSQL("delete from "+CARTNAME+" where itemcheck = 1");
-        Intent intent01 = new Intent (getApplicationContext(),Cart.class);
-        startActivity(intent01);
-        finish();
+        SparseBooleanArray checkedItems = list.getCheckedItemPositions();
+        int count = adapter.getCount();
+        for(int i=count-1;i>=0;i--){
+            if(checkedItems.get(i)){
+                arrData.remove(i);
+                sql.execSQL("delete From"+CARTNAME);
+            }
+            list.clearChoices();
+            adapter.notifyDataSetChanged();
+        }
+
+        /*    sql.execSQL("delete From" + CARTNAME + "where itemcheck = 1");
+            Intent intent01 = new Intent(getApplicationContext(), Cart.class);
+            startActivity(intent01);
+            finish();*/
+
     }
     private class ListAdapter extends ArrayAdapter<MyData> {
 
         LayoutInflater inflater;
         Context context;
-
+        int checkbox_num=0;
         private class ViewHolder {
             ImageView image;
             TextView name;
@@ -160,16 +170,21 @@ public class Cart extends Parking {
                         Toast.makeText(getApplicationContext(), "헤제됨", Toast.LENGTH_SHORT).show();
                     }
                 }
-            });
-            holder.b1.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    sql.execSQL("delete from " + CARTNAME + " where itemname = '" + tems.name + "'");
-                    Toast.makeText(getContext(), tems.name + " 물품이 삭제되었습니다", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), Cart.class);
-                    startActivity(intent);
-                    finish();
-                }
-            });
+            }
+            );
+
+                holder.b1.setOnClickListener(new View.OnClickListener() {
+                    //int c=sql.execSQL("select * From"+tems.check);
+                    // Cursor c=sql.execSQL("select * From"  "where itemcheck=='1'");
+                    public void onClick(View v) {
+                        sql.execSQL("delete from " + CARTNAME + "where itemname = '" + tems.name + "'");
+                        Toast.makeText(getContext(), tems.name + " 물품이 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), Cart.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
             holder.up.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Cursor c = sql.rawQuery("select * from " + CARTNAME + " where itemname = '"+tems.name+"'", null);
@@ -215,13 +230,11 @@ public class Cart extends Parking {
         Intent intent = new Intent (getApplication(),Path.class);
         startActivity(intent);
         finish();
-
     }
     public void itemlist (View v){
         Intent intent = new Intent (getApplication(),Itemlist.class);
         startActivity(intent);
         finish();
-
     }
     public void gomain2(View v){
         Intent intent = new Intent (getApplication(),Main2Activity.class);

@@ -52,18 +52,14 @@
         <activity android:name=".Searchpass" />
         <activity android:name=".Service" />
         <activity android:name=".Noticeboard" />
-        <activity android:name=".Coupon" />
         <activity android:name=".Parking" />
         <activity android:name=".auth"/>
         <activity android:name=".authdaum"/>
         <activity android:name=".authgoogle"/>
         <activity android:name=".authnate"/>
-        <activity android:name=".BeaconMainActivity" />
         <activity android:name=".RecoMonitoringActivity" />
         <activity android:name=".RecoRangingActivity"></activity>
         <service android:name="com.perples.recosdk.RECOBeaconService" />
-        <service android:name=".RecoBackgroundMonitoringService" />
-        <service android:name=".RecoBackgroundRangingService"/>
     </application>
 
 </manifest>

@@ -40,22 +40,12 @@ public abstract class RecoActivity extends Activity implements RECOServiceConnec
 
     private ArrayList<RECOBeaconRegion> generateBeaconRegion() {
         ArrayList<RECOBeaconRegion> regions = new ArrayList<RECOBeaconRegion>();
-        int mMajor = 501;
+
+        RECOBeaconRegion mRecoRegion = new RECOBeaconRegion(BeaconMainActivity.RECO_UUID, 501, 717, "식품관");
 
 
-        int mMinor1 = 718;
-        int mMinor2 = 716;
-        int mMinor3 = 717;
+        regions.add(mRecoRegion);
 
-
-        RECOBeaconRegion mRecoRegion1 = new RECOBeaconRegion(BeaconMainActivity.RECO_UUID, mMajor, mMinor1, "718");
-        RECOBeaconRegion mRecoRegion2= new RECOBeaconRegion(BeaconMainActivity.RECO_UUID, mMajor, mMinor2, "716");
-        RECOBeaconRegion mRecoRegion3 = new RECOBeaconRegion(BeaconMainActivity.RECO_UUID, mMajor, mMinor3, "717");
-
-
-        regions.add(mRecoRegion1);
-        regions.add(mRecoRegion2);
-        regions.add(mRecoRegion3);
 
         return regions;
     }

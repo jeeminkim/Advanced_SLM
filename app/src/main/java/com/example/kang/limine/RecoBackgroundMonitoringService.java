@@ -27,7 +27,7 @@ import java.util.Locale;
  *
  * RECOBackgroundMonitoringService는 백그라운드에서 monitoring을 수행합니다.
  */
-public class RecoBackgroundMonitoringService extends Service implements RECOMonitoringListener, RECOServiceConnectListener{
+public class RecoBackgroundMonitoringService extends Service implements RECOMonitoringListener, RECOServiceConnectListener {
     /**
      * We recommend 1 second for scanning, 10 seconds interval between scanning, and 60 seconds for region expiration time.
      * 1초 스캔, 10초 간격으로 스캔, 60초의 region expiration time은 당사 권장사항입니다.
@@ -83,22 +83,15 @@ public class RecoBackgroundMonitoringService extends Service implements RECOMoni
     private void generateBeaconRegion() {
         Log.i("BackMonitoringService", "generateBeaconRegion()");
 
-        int mMajor = 501;
 
 
-        int mMinor1 = 718;
-        int mMinor2 = 716;
-        int mMinor3 = 717;
+
+        RECOBeaconRegion mRecoRegion= new RECOBeaconRegion(BeaconMainActivity.RECO_UUID, 501, 717, "식품관");
 
 
-        RECOBeaconRegion mRecoRegion1 = new RECOBeaconRegion(BeaconMainActivity.RECO_UUID, mMajor, mMinor1, "입구");
-        RECOBeaconRegion mRecoRegion2= new RECOBeaconRegion(BeaconMainActivity.RECO_UUID, mMajor, mMinor2, "716");
-        RECOBeaconRegion mRecoRegion3 = new RECOBeaconRegion(BeaconMainActivity.RECO_UUID, mMajor, mMinor3, "717");
 
+        mRegions.add(mRecoRegion);
 
-        mRegions.add(mRecoRegion1);
-        mRegions.add(mRecoRegion2);
-        mRegions.add(mRecoRegion3);
 
     }
     private void startMonitoring() {

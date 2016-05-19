@@ -44,9 +44,15 @@ public class Parking extends URLConnect {
     PendingIntent pendingIntent;
     String nfcid, id, myResult;
     TextView tagDesc;
-    private int check = 0;
-    String Cname,Cid;
+
+    String Tname,Tid;
     TextView textView;
+    Integer intime = 0 ;
+    Integer outtime = 0;
+    Integer sumb =0 ;
+    Integer parkm = 0 ;
+    Integer inh, inm, ins, outh, outm, outs;
+    Integer check = 0 ;
 
 
     private static final String TAG_RESULTS="result";
@@ -58,24 +64,23 @@ public class Parking extends URLConnect {
     private static final String TAG_OUTM="outm";
     private static final String TAG_OUTS="outs";
 
+    String hview, mview, sview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         StrictMode.enableDefaults();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parking);
-        textView = (TextView)findViewById(R.id.textViewa);
         tagDesc = (TextView) findViewById(R.id.tagDesc);
         nfcAdapter = getDefaultAdapter(this);
-
-        Cursor c = sql.rawQuery("select name,id From " + TABLENAME, null);
+        getData(urlnfcin);
+        Cursor c = sql.rawQuery("select * From " + TABLENAME, null);
         int count = c.getCount();
         for (int i = 0; i < count; i++) {
             c.moveToNext();
-            Cname = c.getString(0);
-            Cid = c.getString(1);
+            Tname = c.getString(0);
+            Tid = c.getString(1);
         }
-
         if(nfcAdapter == null)
         {
             Toast.makeText(this, "NFC를 지원하지 않는 단말기입니다.", Toast.LENGTH_LONG).show();
@@ -127,7 +132,7 @@ public class Parking extends URLConnect {
             protected void onPostExecute(String s) {
                 super.onPreExecute();
                 //loading.dismiss();
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -168,122 +173,6 @@ public class Parking extends URLConnect {
         addData task = new addData();
         task.execute(id);
     } //nfc in
-    private void AddData3(String id) {
-
-        class addData extends AsyncTask<String, Void, String> {
-            ProgressDialog loading;
-
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                //loading = ProgressDialog.show(Paint.Join.this, "잠시만 기다려 주세요", null, true, true) ;
-                //loading = ProgressDialog.show(Paint.Join.this, "잠시만 기다려 주세요", null, true, true) ;
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPreExecute();
-                //loading.dismiss();
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected String doInBackground(String... params) {
-                try {
-                    String id= (String) params[0];
-
-
-                    //String link = urljoin;
-                    String link = urlnfcouttime;
-                    String data = URLEncoder.encode("id", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-
-
-                    URL url = new URL(link);
-                    URLConnection conn = url.openConnection();
-
-                    conn.setDoOutput(true);
-                    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
-                    wr.write(data);
-                    wr.flush();
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-
-
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line);
-                        break;
-                    }
-                    return sb.toString();
-                } catch (Exception e) {
-                    return new String("doInBackground message : " + e.getMessage());
-                }
-            }
-        }
-        addData task = new addData();
-        task.execute(id);
-    } //nfc outtime
-    private void AddData2(String id) {
-
-        class addData extends AsyncTask<String, Void, String> {
-            ProgressDialog loading;
-
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                //loading = ProgressDialog.show(Paint.Join.this, "잠시만 기다려 주세요", null, true, true) ;
-                //loading = ProgressDialog.show(Paint.Join.this, "잠시만 기다려 주세요", null, true, true) ;
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPreExecute();
-                //loading.dismiss();
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected String doInBackground(String... params) {
-                try {
-                    String id= (String) params[0];
-
-
-                    //String link = urljoin;
-                    String link = urlnfcintime;
-                    String data = URLEncoder.encode("id", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-
-
-                    URL url = new URL(link);
-                    URLConnection conn = url.openConnection();
-
-                    conn.setDoOutput(true);
-                    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
-                    wr.write(data);
-                    wr.flush();
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-
-
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line);
-                        break;
-                    }
-                    return sb.toString();
-                } catch (Exception e) {
-                    return new String("doInBackground message : " + e.getMessage());
-                }
-            }
-        }
-        addData task = new addData();
-        task.execute(id);
-    } //nfc intime
     private void AddData1(String id) {
 
         class addData extends AsyncTask<String, Void, String> {
@@ -301,7 +190,7 @@ public class Parking extends URLConnect {
             protected void onPostExecute(String s) {
                 super.onPreExecute();
                 //loading.dismiss();
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -309,11 +198,9 @@ public class Parking extends URLConnect {
                 try {
                     String id= (String) params[0];
 
-
                     //String link = urljoin;
                     String link = urlnfcout;
                     String data = URLEncoder.encode("id", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-
 
                     URL url = new URL(link);
                     URLConnection conn = url.openConnection();
@@ -352,69 +239,29 @@ public class Parking extends URLConnect {
             byte[] tagId = tag.getId();
             nfcid = toHexString(tagId);
             try {
-                if (nfcid.equals("042CCF5AD44880") && check == 0 ) {  // 출구태그후 입구태그시 ( 처음 출입시 )( 정상 )
+                if (nfcid.equals("042CCF5AD44880")) {  // 출구태그후 입구태그시 ( 처음 출입시 )( 정상 )
+                    Toast.makeText(getApplicationContext(), "입장", Toast.LENGTH_SHORT).show();
+                    AddData(Tid);
+                    getData(urlnfcin);
 
-                    tagDesc.setText(Cname + " 고객님 입장되었습니다~!");
+
+
                     HttpThread thread = new HttpThread();
                     thread.start();
 
-                    AddData(Cid);
-                    AddData2(Cid);
-                    getData(urlnfcintime);
-
-
-                    Toast.makeText(Parking.this, "환영합니다 "+Cname+"고객님!! 입장하셨습니다!!", Toast.LENGTH_SHORT).show();
-
-                    /*Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent1);
-                    finish();*/
-                    check = 1 ;
-                }
-
-                else if(nfcid.equals("047ECB5AD44881") && check == 1 ) {  // 입구태그후 출구태그시 ( 퇴장시 )( 정상 )
-                    tagDesc.setText(Cname + " 고객님 퇴장되었습니다~!");
-                    HttpThread thread = new HttpThread();
-                    thread.start();
-                    AddData1(Cid);
-                    AddData3(Cid);
-                    getData1(urlnfcouttime);
-                    Toast.makeText(Parking.this, "감사합니다  "+Cname +"고객님!! 퇴장하셨습니다!!", Toast.LENGTH_SHORT).show();
-
-                    /*Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);   //이하 3줄 -
-                    startActivity(intent1);
-                    finish();*/
-                    check = 0;
-                }
-
-                else if(nfcid.equals("042CCF5AD44880") && check == 1 ) {  // 입구태그 후 입구에 다시 태그할 경우 ( 비정상 )
-                    tagDesc.setText("죄송합니다. 잘못된 지역입니다. 출구로 가주시기 바랍니다.");
+                } else if (nfcid.equals("047ECB5AD44881")) {  // 입구태그후 출구태그시 ( 퇴장시 )( 정상 )
+                    Toast.makeText(getApplicationContext(), "퇴장", Toast.LENGTH_SHORT).show();
+                    AddData1(Tid);
+                    getData1(urlnfcout);
                     HttpThread thread = new HttpThread();
                     thread.start();
 
-                    Toast.makeText(Parking.this, "죄송합니다. 잘못된 지역입니다. 출구로 가주시기 바랍니다.", Toast.LENGTH_SHORT).show();
-
-                    /*Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent1);
-                    finish();*/
                 }
-
-                else if(nfcid.equals("047ECB5AD44881") && check == 0 ) {  // 출구태그 후 출구에 다시 태그할 경우 ( 비정상 )
-                    tagDesc.setText("죄송합니다. 잘못된 지역입니다. 입구로 가주시기 바랍니다.");
-                    HttpThread thread = new HttpThread();
-                    thread.start();
-
-                    Toast.makeText(Parking.this, "죄송합니다. 잘못된 지역입니다. 입구로 가주시기 바랍니다.", Toast.LENGTH_SHORT).show();
-
-                    /*Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent1);
-                    finish();*/
-                }
-
             }
-
             catch (Exception e) {
                 e.printStackTrace();
             }
+
 
         }
     }
@@ -528,11 +375,19 @@ public class Parking extends URLConnect {
 
                 JSONObject c = peoples.getJSONObject(i);
 
-                String id = c.getString(TAG_ID);
-                String outh = c.getString(TAG_OUTH);
-                String outm = c.getString(TAG_OUTM);
-                String outs = c.getString(TAG_OUTS);
-                textView.append("입장시간 : "+outh +" 시"+outm+" 분" +outs+ "초");
+                Integer south = c.getInt(TAG_OUTH);
+                Integer soutm = c.getInt(TAG_OUTM);
+                Integer souts = c.getInt(TAG_OUTS);
+                sql.execSQL("update " + PARKNAME + " set outh ='" + south + "' where id = '" + Tid + "'");
+                sql.execSQL("update "+PARKNAME + " set outm ='" + soutm + "' where id = '" + Tid + "'");
+                sql.execSQL("update "+PARKNAME+" set outs ='"+souts+"' where id = '"+Tid+"'");
+
+                outtime = south * 3600 + soutm * 60 + souts;
+                parkm = (outtime - intime) ; // 분
+                sumb = parkm * 50; //분당 50원  시간당 3000원
+                tagDesc.append("\n퇴장시간 :'" + south + "'시 '" + soutm + "'분 '" + souts + "'초\n주차요금 :'" + sumb + "' 원");
+
+
             }
 
         }catch (JSONException e){
@@ -585,12 +440,13 @@ public class Parking extends URLConnect {
 
                 JSONObject c = peoples.getJSONObject(i);
 
-                String id = c.getString(TAG_ID);
-                String inh = c.getString(TAG_INH);
-                String inm = c.getString(TAG_INM);
-                String ins = c.getString(TAG_INS);
 
-                textView.append("입장시간 : "+inh +" 시"+inm+" 분" +ins+ "초");
+                Integer sinh = c.getInt(TAG_INH);
+                Integer sinm = c.getInt(TAG_INM);
+                Integer sins = c.getInt(TAG_INS);
+                sql.execSQL("insert into "+PARKNAME+" (id, inh, inm, ins) values ('"+Tid+"',"+sinh+","+sinm+","+sins+")");
+                tagDesc.setText("입장 시간 :" + sinh+"시 "+sinm+"분 "+sins+"초");
+                intime = sinh * 3600 + sinm * 60 + sins;
             }
         }catch (JSONException e){
             e.printStackTrace();

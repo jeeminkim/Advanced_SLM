@@ -82,14 +82,13 @@ public class RecoMonitoringListAdapter extends BaseAdapter {
         viewHolder.recoRegionState.setText(recoRegionState);
         viewHolder.recoRegionTime.setText(recoUpdateTime);
         if(recoRegionState.equals(RECOBeaconRegionState.RECOBeaconRegionInside.toString()) && mMatchedBeaconCounts.get(recoRegion) == 0) {
-            viewHolder.recoRegionBeaconCount.setText("You started monitoring inside of the region.");
+            viewHolder.recoRegionBeaconCount.setText("쿠폰 수령 지역에 들어왔습니다.");
             return convertView;
         }
         if(recoRegionState.equals(RECOBeaconRegionState.RECOBeaconRegionOutside.toString())) {
-            viewHolder.recoRegionBeaconCount.setText("No beacons around.");
+            viewHolder.recoRegionBeaconCount.setText("비콘 영역 밖 입니다.");
             return convertView;
         }
-        viewHolder.recoRegionBeaconCount.setText("# of beacons in the region: " + recoBeaconCount);
 
         return convertView;
     }
