@@ -1,6 +1,7 @@
 package com.example.kang.limine;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class Main2Activity extends Parking
@@ -38,10 +40,11 @@ public class Main2Activity extends Parking
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "CS 담당자에게 전화를 겁니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:01089432301"));
+                startActivity(intent);
             }
         });
 
@@ -121,6 +124,18 @@ public class Main2Activity extends Parking
     }
     public void search(View v){
         Intent intent = new Intent (getApplicationContext(),Itemlist.class);
+        startActivity(intent);
+    }
+    public void noticeboard(View v){
+        Intent intent = new Intent(getApplicationContext(),Noticeboard.class);
+        startActivity(intent);
+    }
+    public void change(View v){
+        Intent intent = new Intent(getApplicationContext(),Changeadd.class);
+        startActivity(intent);
+    }
+    public void shopping(View v){
+        Intent intent = new Intent(getApplicationContext(),Path.class);
         startActivity(intent);
     }
 

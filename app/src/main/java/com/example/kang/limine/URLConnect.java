@@ -5,7 +5,7 @@ package com.example.kang.limine;
  */
 public class  URLConnect extends SQLite {
 
-    String ip = "http://172.30.1.37";
+    String ip = "http://seongju.iptime.org";
 // 변경시 포트포워딩 필수
 
 

@@ -158,7 +158,7 @@ public class MainActivity extends URLConnect {
                     sql.execSQL("insert into "+TABLENAME+" (num) values (1)");
                     sql.execSQL("delete from "+TABLENAME+" where num = 1");
                     sql.execSQL("insert into "+TABLENAME+" (name, id, email, phone, address, num) values ('"+name+"','"+id+"','"+email+"','"+phone+"','"+address+"',1)");
-                    Intent intent = new Intent (getApplicationContext(),Cart.class);
+                    Intent intent = new Intent (getApplicationContext(),Main2Activity.class);
                     startActivity(intent);
                     persons.clear();
                     Toast.makeText(getApplicationContext(),name+"님 환영합니다", Toast.LENGTH_SHORT).show();

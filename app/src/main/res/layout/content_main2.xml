@@ -29,7 +29,7 @@
                 android:id="@+id/button17"
                 android:layout_weight="1"
                 android:background="#d4d5ce"
-                android:onClick="rptlvks" />
+                android:onClick="noticeboard" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -43,17 +43,19 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2"
+                android:text="빠른 쇼핑"
                 android:id="@+id/button15"
                 android:layout_weight="1"
+                android:onClick="shopping"
                 android:background="#d4d5ce" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3"
+                android:text="배송 정보 변경"
                 android:id="@+id/button16"
                 android:layout_weight="1"
+                android:onClick="change"
                 android:background="#d4d5ce" />
         </TableRow>
     </LinearLayout>
